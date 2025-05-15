@@ -1,0 +1,80 @@
+/* Add all the CSS code you provided in the original code */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar styles */
+.sidebar-link {
+    transition: all 0.3s;
+}
+
+.sidebar-link:hover {
+    background-color: rgba(124, 58, 237, 0.1);
+    border-left: 4px solid #7c3aed;
+}
+
+.sidebar-link.active {
+    background-color: rgba(124, 58, 237, 0.15);
+    border-left: 4px solid #7c3aed;
+    color: #7c3aed;
+    font-weight: 600;
+}
+
+/* Progress bar styles */
+.progress-bar {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #e2e8f0;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+}
+
+/* Calendar and buttons */
+.calendar-day {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.calendar-day:hover {
+    background-color: #e2e8f0;
+}
+
+.calendar-day.active {
+    background-color: #7c3aed;
+    color: white;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.tab-button.active {
+    background-color: white;
+    color: #7c3aed;
+    font-weight: 600;
+}
+
+/* Store item hover effect */
+.store-item {
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.store-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}

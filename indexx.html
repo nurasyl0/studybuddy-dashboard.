@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetPlanner - Welcome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Purple gradient background */
+        .gradient-bg {
+            background: linear-gradient(135deg, #f0e6ff 0%, #e6ccff 50%, #d9b3ff 100%);
+            min-height: 100vh;
+        }
+
+        /* Cloud animations */
+        .cloud {
+            position: absolute;
+            opacity: 0.7;
+            animation: drift linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes drift {
+            from {
+                transform: translateX(-100%);
+            }
+
+            to {
+                transform: translateX(100vw);
+            }
+        }
+
+        /* Pet animations */
+        .pet-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 300px;
+        }
+
+        .pet-item {
+            position: absolute;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            cursor: pointer;
+            opacity: 0.8;
+            transform-origin: center;
+        }
+
+        .pet-item.selected {
+            z-index: 10;
+            opacity: 1;
+            transform: scale(1.2);
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+        }
+
+        .pet-item:not(.selected) {
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .bounce-in {
+            animation: bounceIn 0.8s;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+
+            70% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.8s;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .auth-form {
+            transition: all 0.5s ease;
+        }
+
+        /* Info card design */
+        .info-card {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Pet shadow */
+        .pet-shadow {
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 20px;
+            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+            border-radius: 50%;
+        }
+
+        /* Section transition */
+        .section-divider {
+            position: relative;
+            height: 100px;
+            margin-top: -50px;
+            z-index: 2;
+        }
+
+        .section-divider svg {
+            position: absolute;
+            width: 100%;
+            height: 100px;
+        }
+
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            max-width: 90%;
+            width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        /* Social icons hover effect */
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main container with gradient background -->
+    <div class="gradient-bg relative">
+        <!-- Animated clouds -->
+        <div class="cloud" style="top: 15%; left: -20%; animation-duration: 120s;">
+            <svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M10 40C10 29 19 20 30 20C41 20 50 29 50 40C50 51 59 60 70 60H140C151 60 160 51 160 40C160 29 169 20 180 20C191 20 200 29 200 40V60H10V40Z"
+                    fill="white" />
+            </svg>
+        </div>
+        <div class="cloud" style="top: 30%; left: -15%; animation-duration: 90s; animation-delay: 10s;">
+            <svg width="150" height="45" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M10 40C10 29 19 20 30 20C41 20 50 29 50 40C50 51 59 60 70 60H140C151 60 160 51 160 40C160 29 169 20 180 20C191 20 200 29 200 40V60H10V40Z"
+                    fill="white" />
+            </svg>
+        </div>
+        <div class="cloud" style="top: 60%; left: -25%; animation-duration: 150s; animation-delay: 5s;">
+            <svg width="250" height="75" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M10 40C10 29 19 20 30 20C41 20 50 29 50 40C50 51 59 60 70 60H140C151 60 160 51 160 40C160 29 169 20 180 20C191 20 200 29 200 40V60H10V40Z"
+                    fill="white" />
+            </svg>
+        </div>
+        <div class="cloud" style="top: 10%; left: -30%; animation-duration: 180s; animation-delay: 15s;">
+            <svg width="300" height="90" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M10 40C10 29 19 20 30 20C41 20 50 29 50 40C50 51 59 60 70 60H140C151 60 160 51 160 40C160 29 169 20 180 20C191 20 200 29 200 40V60H10V40Z"
+                    fill="white" />
+            </svg>
+        </div>
+        <div class="cloud" style="top: 45%; left: -10%; animation-duration: 110s; animation-delay: 25s;">
+            <svg width="180" height="55" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M10 40C10 29 19 20 30 20C41 20 50 29 50 40C50 51 59 60 70 60H140C151 60 160 51 160 40C160 29 169 20 180 20C191 20 200 29 200 40V60H10V40Z"
+                    fill="white" />
+            </svg>
+        </div>
+
+        <!-- Main content -->
+        <div class="relative min-h-screen flex flex-col z-10">
+            <!-- Header -->
+            <header class="py-4 px-6 md:px-10 flex justify-between items-center">
+                <div class="flex items-center">
+                    <svg class="h-10 w-10 text-indigo-600" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M16 3V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M8 3V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M3 11H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M9 15H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <h1 class="ml-2 text-2xl font-bold text-indigo-800">PetPlanner</h1>
+                </div>
+                <div>
+                    <button id="signin-btn"
+                        class="px-4 py-2 text-indigo-700 font-medium hover:text-indigo-900 transition-colors">Sign
+                        In</button>
+                    <button id="signup-btn"
+                        class="px-6 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors">Sign
+                        Up</button>
+                </div>
+            </header>
+
+            <!-- Hero section -->
+            <section class="flex-grow flex flex-col md:flex-row items-center justify-center px-6 md:px-10 py-10">
+                <!-- Left side - Welcome text -->
+                <div class="w-full md:w-1/2 text-center md:text-left slide-in">
+                    <h2 class="text-4xl md:text-5xl font-bold text-indigo-900 mb-4">Organize Your Pet's Life</h2>
+                    <p class="text-xl text-indigo-800 mb-6">Keep track of tasks, appointments, and activities for your
+                        furry friends all in one place.</p>
+                    <p class="text-lg text-indigo-700 mb-8">PetPlanner helps you manage your pet's schedule, health
+                        records, and daily activities with ease. Never miss an important appointment again!</p>
+                    <button id="get-started-btn"
+                        class="px-8 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-lg">Get
+                        Started</button>
+                </div>
+
+                <!-- Right side - Pet animations -->
+                <div class="w-full md:w-1/2 mt-10 md:mt-0">
+                    <div class="pet-container">
+                        <!-- Pet 1 - Dog -->
+                        <div class="pet-item" data-pet="dog">
+                            <div class="floating" style="animation-delay: 0.2s;">
+                                <!-- Add your pet image here: replace "your-dog-image.png" with your actual file name -->
+                                <img src="pictures/dog.png" alt="Dog" class="w-48 h-48 object-contain mx-auto">
+                                <!-- Fallback SVG if image is not available -->
+                                <svg class="w-48 h-48 mx-auto hidden" viewBox="0 0 200 200" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="100" cy="100" r="90" fill="#FFC47E" />
+                                    <circle cx="70" cy="80" r="12" fill="white" />
+                                    <circle cx="130" cy="80" r="12" fill="white" />
+                                    <circle cx="70" cy="80" r="6" fill="#333" />
+                                    <circle cx="130" cy="80" r="6" fill="#333" />
+                                    <path d="M85 120C93 128 107 128 115 120" stroke="#333" stroke-width="4"
+                                        stroke-linecap="round" />
+                                    <path d="M60 50C50 40 30 45 25 55" stroke="#FFC47E" stroke-width="8"
+                                        stroke-linecap="round" />
+                                    <path d="M140 50C150 40 170 45 175 55" stroke="#FFC47E" stroke-width="8"
+                                        stroke-linecap="round" />
+                                </svg>
+                            </div>
+                            <div class="pet-shadow"></div>
+                        </div>
+
+                        <!-- Pet 2 - Cat -->
+                        <div class="pet-item" data-pet="cat">
+                            <div class="floating" style="animation-delay: 0.4s;">
+                                <!-- Add your pet image here: replace "your-cat-image.png" with your actual file name -->
+                                <img src="pictures/cat.png" alt="Cat" class="w-48 h-48 object-contain mx-auto">
+                                <!-- Fallback SVG if image is not available -->
+                                <svg class="w-58 h-48 mx-auto hidden" viewBox="0 0 200 200" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="100" cy="100" r="90" fill="#B3B3F1" />
+                                    <path d="M60 60L40 30" stroke="#B3B3F1" stroke-width="8" stroke-linecap="round" />
+                                    <path d="M140 60L160 30" stroke="#B3B3F1" stroke-width="8" stroke-linecap="round" />
+                                    <circle cx="70" cy="80" r="10" fill="white" />
+                                    <circle cx="130" cy="80" r="10" fill="white" />
+                                    <circle cx="70" cy="80" r="5" fill="#333" />
+                                    <circle cx="130" cy="80" r="5" fill="#333" />
+                                    <path d="M100 100L100 120" stroke="#333" stroke-width="2" />
+                                    <path d="M85 130C93 138 107 138 115 130" stroke="#333" stroke-width="4"
+                                        stroke-linecap="round" />
+                                </svg>
+                            </div>
+                            <div class="pet-shadow"></div>
+                        </div>
+
+                        <!-- Pet 3 - Bird -->
+                        <div class="pet-item" data-pet="bird">
+                            <div class="floating" style="animation-delay: 0.6s;">
+                                <!-- Add your pet image here: replace "your-bird-image.png" with your actual file name -->
+                                <img src="pictures/bird.png" alt="Bird" class="w-48 h-48 object-contain mx-auto">
+                                <!-- Fallback SVG if image is not available -->
+                                <svg class="w-48 h-48 mx-auto hidden" viewBox="0 0 200 200" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="100" cy="100" r="80" fill="#FFD166" />
+                                    <circle cx="80" cy="80" r="10" fill="white" />
+                                    <circle cx="120" cy="80" r="10" fill="white" />
+                                    <circle cx="80" cy="80" r="5" fill="#333" />
+                                    <circle cx="120" cy="80" r="5" fill="#333" />
+                                    <path d="M90 110L110 110" stroke="#333" stroke-width="4" stroke-linecap="round" />
+                                    <path d="M100 110L100 120" stroke="#333" stroke-width="4" stroke-linecap="round" />
+                                    <path d="M80 50L60 30" stroke="#FFD166" stroke-width="8" stroke-linecap="round" />
+                                    <path d="M120 50L140 30" stroke="#FFD166" stroke-width="8" stroke-linecap="round" />
+                                </svg>
+                            </div>
+                            <div class="pet-shadow"></div>
+                        </div>
+                    </div>
+
+                    <!-- Pet selection text -->
+                    <div class="text-center mt-6">
+                        <p class="text-lg font-medium text-indigo-800">Click to select your pet companion</p>
+                        <p id="selected-pet-name" class="text-xl font-bold text-indigo-600 mt-2">No pet selected</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Section divider -->
+        <div class="section-divider">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" fill="#ffffff">
+                <path
+                    d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z">
+                </path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Information section with white background -->
+    <section class="bg-white py-16 px-6 md:px-10">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-center text-indigo-900 mb-12">Why Choose PetPlanner?</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Feature 1 -->
+                <div class="info-card p-6">
+                    <div class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                        <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-indigo-800 text-center mb-3">Task Management</h3>
+                    <p class="text-indigo-700 text-center">Keep track of all your pet's needs with our intuitive task
+                        management system. Never miss a vet appointment or feeding time again.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="info-card p-6">
+                    <div class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                        <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-indigo-800 text-center mb-3">Calendar Integration</h3>
+                    <p class="text-indigo-700 text-center">Seamlessly integrate with your calendar to schedule and
+                        receive reminders for important pet-related events and activities.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="info-card p-6">
+                    <div class="bg-indigo-100 rounded-full w-16 h-16 flex items-center justify-center mb-4 mx-auto">
+                        <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-indigo-800 text-center mb-3">Health Tracking</h3>
+                    <p class="text-indigo-700 text-center">Monitor your pet's health metrics, medication schedules, and
+                        wellness activities to ensure they stay happy and healthy.</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Preview -->
+            <div class="mt-20">
+                <h3 class="text-2xl font-bold text-center text-indigo-900 mb-6">Your Pet's Dashboard</h3>
+                <p class="text-indigo-700 text-center mb-10 max-w-2xl mx-auto">Manage all aspects of your pet's life
+                    from one central location. Our intuitive dashboard gives you everything you need at a glance.</p>
+
+                <div class="info-card p-6 max-w-4xl mx-auto">
+                    <div class="bg-indigo-50 rounded-xl p-4 md:p-6 shadow-inner">
+                        <!-- Dashboard preview mockup -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="bg-white p-3 rounded-lg shadow">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-medium text-indigo-800">Tasks</h4>
+                                    <span
+                                        class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2 py-1 rounded">3</span>
+                                </div>
+                                <div class="mt-2 text-sm text-gray-600">
+                                    <p>• Morning walk</p>
+                                    <p>• Vet appointment</p>
+                                    <p>• Evening feeding</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-3 rounded-lg shadow">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-medium text-indigo-800">Health</h4>
+                                    <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="mt-2 text-sm text-gray-600">
+                                    <p>Weight: 15.2 kg</p>
+                                    <p>Last checkup: 2 weeks ago</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-3 rounded-lg shadow">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-medium text-indigo-800">Calendar</h4>
+                                    <span
+                                        class="bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded">Today</span>
+                                </div>
+                                <div class="mt-2 text-sm text-gray-600">
+                                    <p>• Grooming: 2:00 PM</p>
+                                    <p>• Training: 4:30 PM</p>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-3 rounded-lg shadow">
+                                <div class="flex items-center justify-between">
+                                    <h4 class="font-medium text-indigo-800">Supplies</h4>
+                                    <span
+                                        class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded">Low</span>
+                                </div>
+                                <div class="mt-2 text-sm text-gray-600">
+                                    <p>• Food: 3 days left</p>
+                                    <p>• Treats: 1 week left</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Call to action -->
+            <div class="mt-16 text-center">
+                <h3 class="text-2xl font-bold text-indigo-900 mb-4">Ready to get started?</h3>
+                <p class="text-indigo-700 mb-8 max-w-2xl mx-auto">Join thousands of pet owners who are already using
+                    PetPlanner to take better care of their furry, feathery, and scaly friends.</p>
+                <button id="info-signup-btn"
+                    class="px-8 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors text-lg">Create
+                    Your Account</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-indigo-900 text-white py-8 px-6 md:px-10">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-6 md:mb-0">
+                <div class="flex items-center">
+                    <svg class="h-8 w-8 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M16 3V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M8 3V7" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M3 11H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M9 15H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <h2 class="ml-2 text-xl font-bold">PetPlanner</h2>
+                </div>
+                <p class="mt-2 text-indigo-200">Organize your pet's life with ease</p>
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" class="text-indigo-200 hover:text-white transition-colors">About</a>
+                <a href="#" class="text-indigo-200 hover:text-white transition-colors">Features</a>
+                <a href="#" id="contact-link" class="text-indigo-200 hover:text-white transition-colors">Contact</a>
+                <a href="#" id="privacy-link" class="text-indigo-200 hover:text-white transition-colors">Privacy</a>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto mt-8 pt-6 border-t border-indigo-800 text-center text-indigo-300">
+            <p>&copy; 2023 PetPlanner. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+            <!-- Tabs -->
+            <div class="flex border-b">
+                <button id="signin-tab"
+                    class="w-1/2 py-4 font-medium text-center text-indigo-600 border-b-2 border-indigo-600">Sign
+                    In</button>
+                <button id="signup-tab" class="w-1/2 py-4 font-medium text-center text-gray-500">Sign Up</button>
+            </div>
+
+            <!-- Sign In Form -->
+
+            <body>
+
+                <button id="signInButton">Sign In</button>
+
+                <script>
+                    document.getElementById('signInButton').addEventListener('click', () => {
+                        // Redirect to the dashboard page
+                        window.location.href = 'Dashboard.html';
+                    });
+                </script>
+
+            </body>
+            <div id="signin-form" class="auth-form p-6">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Welcome Back!</h3>
+                <form class="space-y-4">
+                    <!-- Email input -->
+                    <div>
+                        <label for="signin-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="signin-email"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="your@email.com" required>
+                        <!-- Error message for email -->
+                        <p id="signin-email-error" class="mt-1 text-sm text-red-600 hidden">Please enter a valid email
+                            address</p>
+                    </div>
+
+                    <!-- Password input -->
+                    <div>
+                        <label for="signin-password"
+                            class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="signin-password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="••••••••" required>
+                        <!-- Error message for password -->
+                        <p id="signin-password-error" class="mt-1 text-sm text-red-600 hidden">Password is required</p>
+                    </div>
+
+                    <!-- Remember me and forgot password -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember-me"
+                                class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                        </div>
+                        <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">Forgot
+                            password?</a>
+                    </div>
+
+                    <!-- Sign In button -->
+                    <button type="button" id="signin-submit"
+                        class="w-full py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors">Sign
+                        In</button>
+                </form>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signup-form" class="auth-form p-6 hidden">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Create Account</h3>
+                <form class="space-y-4">
+                    <!-- Full name input -->
+                    <div>
+                        <label for="signup-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                        <input type="text" id="signup-name"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="John Doe" required>
+                        <!-- Error message for name -->
+                        <p id="signup-name-error" class="mt-1 text-sm text-red-600 hidden">Please enter your name</p>
+                    </div>
+
+                    <!-- Email input -->
+                    <div>
+                        <label for="signup-email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="signup-email"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="your@email.com" required>
+                        <!-- Error message for email -->
+                        <p id="signup-email-error" class="mt-1 text-sm text-red-600 hidden">Please enter a valid email
+                            address</p>
+                    </div>
+
+                    <!-- Password input -->
+                    <div>
+                        <label for="signup-password"
+                            class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="signup-password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="••••••••" required>
+                        <!-- Error message for password -->
+                        <p id="signup-password-error" class="mt-1 text-sm text-red-600 hidden">Password must be at least
+                            8 characters</p>
+                    </div>
+
+                    <!-- Confirm password input -->
+                    <div>
+                        <label for="signup-confirm-password"
+                            class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="••••••••" required>
+                        <!-- Error message for confirm password -->
+                        <p id="signup-confirm-password-error" class="mt-1 text-sm text-red-600 hidden">Passwords do not
+                            match</p>
+                    </div>
+
+                    <!-- Selected pet display -->
+                    <div class="bg-indigo-50 p-3 rounded-lg">
+                        <p class="text-sm font-medium text-indigo-800">Selected Pet:</p>
+                        <p id="signup-selected-pet" class="text-indigo-600 font-bold">No pet selected</p>
+                        <p class="text-xs text-indigo-500 mt-1">You can change your pet selection anytime</p>
+                    </div>
+
+                    <!-- Terms and conditions -->
+                    <div class="flex items-start">
+                        <input type="checkbox" id="terms"
+                            class="h-4 w-4 mt-1 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                        <label for="terms" class="ml-2 block text-sm text-gray-700">
+                            I agree to the <a href="#" class="text-indigo-600 hover:text-indigo-500">Terms of
+                                Service</a> and <a href="#" class="text-indigo-600 hover:text-indigo-500">Privacy
+                                Policy</a>
+                        </label>
+                    </div>
+
+                    <!-- Sign Up button -->
+                    <button type="button" id="signup-submit"
+                        class="w-full py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors">Sign
+                        Up</button>
+                </form>
+            </div>
+
+            <!-- Close and back buttons -->
+            <div class="px-6 py-4 bg-gray-50 flex justify-between">
+                <button id="back-to-home" class="text-gray-600 hover:text-gray-800 font-medium">
+                    <svg class="w-4 h-4 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back
+                </button>
+                <button id="close-modal" class="text-gray-600 hover:text-gray-800">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal with Social Media Icons -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content max-w-md">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-indigo-900">Contact Us</h3>
+                    <button class="close-modal text-gray-500 hover:text-gray-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <p class="text-gray-700 mb-8">Connect with us on social media or send us a message:</p>
+
+                <div class="flex justify-center space-x-8 mb-8">
+                    <!-- Instagram Icon -->
+                    <a href="#" class="social-icon">
+                        <div class="bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-700 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                            </svg>
+                        </div>
+                        <p class="text-center mt-2 text-sm font-medium text-gray-700">Instagram</p>
+                    </a>
+
+                    <!-- Facebook Icon -->
+                    <a href="#" class="social-icon">
+                        <div class="bg-blue-600 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+                            </svg>
+                        </div>
+                        <p class="text-center mt-2 text-sm font-medium text-gray-700">Facebook</p>
+                    </a>
+
+                    <!-- WhatsApp Icon -->
+                    <a href="#" class="social-icon">
+                        <div class="bg-green-500 p-3 rounded-full">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                            </svg>
+                        </div>
+                        <p class="text-center mt-2 text-sm font-medium text-gray-700">WhatsApp</p>
+                    </a>
+                </div>
+
+                <div class="text-center text-gray-600 text-sm">
+                    <p>You can also email us at:</p>
+                    <p class="font-medium text-indigo-600 mt-1">contact@petplanner.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacy-modal" class="modal">
+        <div class="modal-content max-w-3xl">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-indigo-900">Privacy Policy</h3>
+                    <button class="close-modal text-gray-500 hover:text-gray-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="overflow-y-auto max-h-[70vh] pr-2">
+                    <div class="space-y-6 text-gray-700">
+                        <p class="font-medium text-lg">Last Updated: January 1, 2023</p>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-indigo-800 mb-2">1. Introduction</h4>
+                            <p>Welcome to PetPlanner. We respect your privacy and are committed to protecting your
+                                personal data. This privacy policy will inform you about how we look after your personal
+                                data when you visit our website and tell you about your privacy rights and how the law
+                                protects you.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-indigo-800 mb-2">2. The Data We Collect About You</h4>
+                            <p>Personal data, or personal information, means any information about an individual from
+                                which that person can be identified. We may collect, use, store and transfer different
+                                kinds of personal data about you which we have grouped together as follows:</p>
+                            <ul class="list-disc pl-6 mt-2 space-y-1">
+                                <li>Identity Data includes first name, last name, username or similar identifier.</li>
+                                <li>Contact Data includes email address and telephone numbers.</li>
+                                <li>Technical Data includes internet protocol (IP) address, your login data, browser
+                                    type and version, time zone setting and location, browser plug-in types and
+                                    versions, operating system and platform, and other technology on the devices you use
+                                    to access this website.</li>
+                                <li>Profile Data includes your username and password, your interests, preferences,
+                                    feedback and survey responses.</li>
+                                <li>Usage Data includes information about how you use our website, products and
+                                    services.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-indigo-800 mb-2">3. How We Use Your Personal Data</h4>
+                            <p>We will only use your personal data when the law allows us to. Most commonly, we will use
+                                your personal data in the following circumstances:</p>
+                            <ul class="list-disc pl-6 mt-2 space-y-1">
+                                <li>Where we need to perform the contract we are about to enter into or have entered
+                                    into with you.</li>
+                                <li>Where it is necessary for our legitimate interests (or those of a third party) and
+                                    your interests and fundamental rights do not override those interests.</li>
+                                <li>Where we need to comply with a legal obligation.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-indigo-800 mb-2">4. Data Security</h4>
+                            <p>We have put in place appropriate security measures to prevent your personal data from
+                                being accidentally lost, used or accessed in an unauthorized way, altered or disclosed.
+                                In addition, we limit access to your personal data to those employees, agents,
+                                contractors and other third parties who have a business need to know.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-indigo-800 mb-2">5. Data Retention</h4>
+                            <p>We will only retain your personal data for as long as reasonably necessary to fulfill the
+                                purposes we collected it for, including for the purposes of satisfying any legal,
+                                regulatory, tax, accounting or reporting requirements.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-indigo-800 mb-2">6. Your Legal Rights</h4>
+                            <p>Under certain circumstances, you have rights under data protection laws in relation to
+                                your personal data, including the right to:</p>
+                            <ul class="list-disc pl-6 mt-2 space-y-1">
+                                <li>Request access to your personal data.</li>
+                                <li>Request correction of your personal data.</li>
+                                <li>Request erasure of your personal data.</li>
+                                <li>Object to processing of your personal data.</li>
+                                <li>Request restriction of processing your personal data.</li>
+                                <li>Request transfer of your personal data.</li>
+                                <li>Right to withdraw consent.</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-semibold text-indigo-800 mb-2">7. Contact Us</h4>
+                            <p>If you have any questions about this privacy policy or our privacy practices, please
+                                contact us at:</p>
+                            <p class="font-medium mt-2">Email: privacy@petplanner.com</p>
+                            <p class="font-medium">Address: 123 Pet Street, Animalville, PA 12345</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // DOM Elements
+            const authModal = document.getElementById('auth-modal');
+            const contactModal = document.getElementById('contact-modal');
+            const privacyModal = document.getElementById('privacy-modal');
+            const signinTab = document.getElementById('signin-tab');
+            const signupTab = document.getElementById('signup-tab');
+            const signinForm = document.getElementById('signin-form');
+            const signupForm = document.getElementById('signup-form');
+            const signinBtn = document.getElementById('signin-btn');
+            const signupBtn = document.getElementById('signup-btn');
+            const infoSignupBtn = document.getElementById('info-signup-btn');
+            const getStartedBtn = document.getElementById('get-started-btn');
+            const closeModal = document.getElementById('close-modal');
+            const backToHome = document.getElementById('back-to-home');
+            const signinSubmitBtn = document.getElementById('signin-submit');
+            const signupSubmitBtn = document.getElementById('signup-submit');
+            const petItems = document.querySelectorAll('.pet-item');
+            const selectedPetName = document.getElementById('selected-pet-name');
+            const signupSelectedPet = document.getElementById('signup-selected-pet');
+            const contactLink = document.getElementById('contact-link');
+            const privacyLink = document.getElementById('privacy-link');
+            const closeModalButtons = document.querySelectorAll('.close-modal');
+
+            // Check if images are available, if not show SVG fallbacks
+            document.querySelectorAll('.pet-item img').forEach(img => {
+                img.onerror = function () {
+                    this.style.display = 'none';
+                    this.nextElementSibling.classList.remove('hidden');
+                };
+            });
+
+            let selectedPet = null;
+
+            // Position pets initially
+            positionPets();
+
+            // Open modal with sign in form
+            signinBtn.addEventListener('click', () => {
+                showAuthModal('signin');
+            });
+
+            // Open modal with sign up form
+            signupBtn.addEventListener('click', () => {
+                showAuthModal('signup');
+            });
+
+            // Info section sign up button
+            infoSignupBtn.addEventListener('click', () => {
+                showAuthModal('signup');
+            });
+
+            // Get started button opens sign up form
+            getStartedBtn.addEventListener('click', () => {
+                showAuthModal('signup');
+            });
+
+            // Close modal
+            closeModal.addEventListener('click', () => {
+                authModal.classList.add('hidden');
+            });
+
+            // Back to home button
+            backToHome.addEventListener('click', () => {
+                authModal.classList.add('hidden');
+            });
+
+            // Switch between sign in and sign up tabs
+            signinTab.addEventListener('click', () => {
+                switchTab('signin');
+            });
+
+            signupTab.addEventListener('click', () => {
+                switchTab('signup');
+            });
+
+            // Contact link opens contact modal
+            contactLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                contactModal.classList.add('active');
+            });
+
+            // Privacy link opens privacy modal
+            privacyLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                privacyModal.classList.add('active');
+            });
+
+            // Close modals when clicking close buttons
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    contactModal.classList.remove('active');
+                    privacyModal.classList.remove('active');
+                });
+            });
+
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === contactModal) {
+                    contactModal.classList.remove('active');
+                }
+                if (e.target === privacyModal) {
+                    privacyModal.classList.remove('active');
+                }
+            });
+
+            // Pet selection
+            petItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    // Store the selected pet
+                    selectedPet = item.dataset.pet;
+
+                    // Update pet selection display
+                    updatePetSelection(selectedPet);
+
+                    // Visual feedback - reposition pets
+                    petItems.forEach(p => p.classList.remove('selected'));
+                    item.classList.add('selected');
+                    positionPets();
+                });
+            });
+
+            // Sign In submission
+            signinSubmitBtn.addEventListener('click', () => {
+                // Reset error messages
+                document.getElementById('signin-email-error').classList.add('hidden');
+                document.getElementById('signin-password-error').classList.add('hidden');
+
+                // Get form values
+                const email = document.getElementById('signin-email').value.trim();
+                const password = document.getElementById('signin-password').value;
+
+                // Simple validation
+                let isValid = true;
+
+                if (!isValidEmail(email)) {
+                    document.getElementById('signin-email-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (!password) {
+                    document.getElementById('signin-password-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    // Here you would normally send the data to your backend for authentication
+                    // For this example, we'll simulate a successful login
+
+                    // IMPORTANT: Replace this with your actual authentication logic
+                    // Example API call:
+                    /*
+                    fetch('/api/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, password }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Store authentication token
+                            localStorage.setItem('authToken', data.token);
+                            // Redirect to dashboard
+                            redirectToDashboard();
+                        } else {
+                            // Show error message
+                            alert(data.message || 'Login failed. Please check your credentials.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again later.');
+                    });
+                    */
+
+                    // For demonstration, we'll just redirect
+                    redirectToDashboard();
+                }
+            });
+
+            // Sign Up submission
+            signupSubmitBtn.addEventListener('click', () => {
+                // Reset error messages
+                document.getElementById('signup-name-error').classList.add('hidden');
+                document.getElementById('signup-email-error').classList.add('hidden');
+                document.getElementById('signup-password-error').classList.add('hidden');
+                document.getElementById('signup-confirm-password-error').classList.add('hidden');
+
+                // Get form values
+                const name = document.getElementById('signup-name').value.trim();
+                const email = document.getElementById('signup-email').value.trim();
+                const password = document.getElementById('signup-password').value;
+                const confirmPassword = document.getElementById('signup-confirm-password').value;
+                const termsAccepted = document.getElementById('terms').checked;
+
+                // Simple validation
+                let isValid = true;
+
+                if (!name) {
+                    document.getElementById('signup-name-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (!isValidEmail(email)) {
+                    document.getElementById('signup-email-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (password.length < 8) {
+                    document.getElementById('signup-password-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (password !== confirmPassword) {
+                    document.getElementById('signup-confirm-password-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (!termsAccepted) {
+                    alert('Please accept the Terms of Service and Privacy Policy');
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    // Store selected pet (or default to dog if none selected)
+                    localStorage.setItem('selectedPet', selectedPet || 'dog');
+
+                    // For demonstration, we'll just redirect
+                    redirectToDashboard();
+                }
+            });
+
+            // Helper functions
+            function showAuthModal(tab) {
+                authModal.classList.remove('hidden');
+                switchTab(tab);
+            }
+
+            function switchTab(tab) {
+                if (tab === 'signin') {
+                    signinTab.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-600');
+                    signinTab.classList.remove('text-gray-500');
+                    signupTab.classList.add('text-gray-500');
+                    signupTab.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
+
+                    signinForm.classList.remove('hidden');
+                    signupForm.classList.add('hidden');
+
+                    signinForm.classList.add('bounce-in');
+                } else {
+                    signupTab.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-600');
+                    signupTab.classList.remove('text-gray-500');
+                    signinTab.classList.add('text-gray-500');
+                    signinTab.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
+
+                    signupForm.classList.remove('hidden');
+                    signinForm.classList.add('hidden');
+
+                    signupForm.classList.add('bounce-in');
+                }
+            }
+
+            function positionPets() {
+                const container = document.querySelector('.pet-container');
+                const containerWidth = container.offsetWidth;
+                const centerX = containerWidth / 2;
+
+                petItems.forEach((item, index) => {
+                    const isSelected = item.classList.contains('selected');
+
+                    if (isSelected) {
+                        // Center the selected pet
+                        item.style.left = `${centerX - item.offsetWidth / 2}px`;
+                        item.style.zIndex = '10';
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1.2)';
+                    } else {
+                        const totalNonSelected = petItems.length - 1;
+                        const nonSelectedIndex = [...petItems].filter(p => !p.classList.contains('selected')).indexOf(item);
+
+                        // Position non-selected pets evenly
+                        if (totalNonSelected === 1) {
+                            // If only one non-selected, put it to the side
+                            item.style.left = `${centerX - item.offsetWidth / 2 - 150}px`;
+                        } else if (totalNonSelected === 2) {
+                            // If two non-selected, put them on either side
+                            const offset = nonSelectedIndex === 0 ? -150 : 150;
+                            item.style.left = `${centerX - item.offsetWidth / 2 + offset}px`;
+                        } else {
+                            // For more than two, distribute them
+                            const segment = containerWidth / (totalNonSelected + 1);
+                            const position = segment * (nonSelectedIndex + 1) - item.offsetWidth / 2;
+                            item.style.left = `${position}px`;
+                        }
+
+                        item.style.zIndex = '1';
+                        item.style.opacity = '0.7';
+                        item.style.transform = 'scale(1)';
+                    }
+                });
+            }
+
+            function updatePetSelection(pet) {
+                const petNames = {
+                    'dog': 'Dog',
+                    'cat': 'Cat',
+                    'bird': 'Bird'
+                };
+
+                const petName = petNames[pet] || 'Unknown Pet';
+                selectedPetName.textContent = `Selected: ${petName}`;
+                signupSelectedPet.textContent = petName;
+            }
+
+            function redirectToDashboard() {
+                // This is where you would redirect to your dashboard page
+                alert('Login/Registration successful! Redirecting to dashboard...');
+
+                // IMPORTANT: This is where you would redirect to your task planner page
+                // window.location.href = "dashboard.html"; // Uncomment this line and replace with your task planner page
+
+                // For demonstration purposes only:
+                setTimeout(() => {
+                    // This is just for demonstration - in a real app you would redirect instead
+                    authModal.classList.add('hidden');
+                }, 1500);
+            }
+
+            function isValidEmail(email) {
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+        });
+    </script>
+</body>
+
+</html>
